@@ -44,10 +44,11 @@ export default async function handler(
     const response = await chain.call({
       question: sanitizedQuestion,
       chat_history: history || [],
+      interactionCount: history.filter(msg => msg.type === 'userMessage').length + 1,
     });
-
     console.log('response', response);
-    res.status(200).json(response);
+    res.status(200).json({...response, interactionCount: history.filter(msg => msg.type === 'userMessage').length + 1});
+
   } catch (error: any) {
     console.log('error', error);
     res.status(500).json({ error: error.message || 'Something went wrong' });

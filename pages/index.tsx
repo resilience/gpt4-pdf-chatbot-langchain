@@ -61,6 +61,7 @@ export default function Home() {
         {
           type: 'userMessage',
           message: question,
+          interactionCount: state.messages.filter(msg => msg.type === 'userMessage').length + 1,
         },
       ],
     }));
@@ -167,12 +168,17 @@ export default function Home() {
                   return (
                     <>
                       <div key={`chatMessage-${index}`} className={className}>
-                        {icon}
-                        <div className={styles.markdownanswer}>
-                          <ReactMarkdown linkTarget="_blank">
-                            {message.message}
-                          </ReactMarkdown>
-                        </div>
+                          {icon}
+                          <div className={styles.markdownanswer}>
+                              <ReactMarkdown linkTarget="_blank">
+                                  {message.message}
+                              </ReactMarkdown>
+                          </div>
+                          {message.type === 'userMessage' && message.interactionCount && 
+                              <div className={styles.interactionCount}>
+                                  Interaction #{message.interactionCount}
+                              </div>
+                          }
                       </div>
                       {message.sourceDocs && (
                         <div
